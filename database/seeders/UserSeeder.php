@@ -21,5 +21,12 @@ class UserSeeder extends Seeder
                 'name' => 'Matheus S. Jose',
                 'email' => 'matheus@gmail.com'
             ]);
+
+        User::factory()
+            ->unverified()
+            ->create([
+                'name' => 'Matheus S. Jose',
+                'email' => 'matheus@gmail.com.br'
+            ]);
     }
 }

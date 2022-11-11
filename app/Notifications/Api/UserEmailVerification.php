@@ -3,17 +3,14 @@
 namespace App\Notifications\Api;
 
 use Closure;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Facades\URL;
 
 class UserEmailVerification extends Notification
 {
+    private string $url;
+
     /**
      * The callback that should be used to create the verify email URL.
      *
@@ -27,6 +24,11 @@ class UserEmailVerification extends Notification
      * @var Closure|null
      */
     public static $toMailCallback;
+
+    public function __construct(string $url)
+    {
+        $this->url = $url;
+    }
 
     /**
      * Get the notification's channels.
@@ -67,7 +69,7 @@ class UserEmailVerification extends Notification
         return (new MailMessage)
             ->subject(Lang::get('Verificar endereço de e-mail'))
             ->line(Lang::get('Clique no botão abaixo para verificar seu endereço de e-mail.'))
-            ->action(Lang::get('Verificar endereço de e-mail'), $url)
+            ->action(Lang::get('Verificar endereço de e-mail'), url($url))
             ->line(Lang::get('Se você não criou uma conta, nenhuma ação adicional é necessária.'));
     }
 
@@ -88,7 +90,7 @@ class UserEmailVerification extends Notification
             'hash' => sha1($notifiable->getEmailForVerification()),
         ]);
 
-        return config('app.url_callback') . "/{$queryBuild}";
+        return "{$this->url}/email-verification?{$queryBuild}";
 
 //        return URL::temporarySignedRoute(
 //            'verification.verify',

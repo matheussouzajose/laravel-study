@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\Api\PasswordResetNotification;
 use App\Notifications\Api\UserEmailVerification;
-use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -66,6 +65,13 @@ class User extends Authenticatable implements JWTSubject
 
     public function sendEmailVerificationNotification()
     {
-        $this->notify(new UserEmailVerification);
+        $url = config('app.url_callback');
+        $this->notify(new UserEmailVerification($url));
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $url = config('app.url_callback');
+        $this->notify(new PasswordResetNotification("{$url}/reset-password?token={$token}"));
     }
 }
