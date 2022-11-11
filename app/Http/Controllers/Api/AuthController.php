@@ -7,15 +7,32 @@ use App\Http\Requests\Api\LoginRequest;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
 
     /**
-     * @param LoginRequest $request
-     * @return Application|ResponseFactory|Response
-     * @throws ValidationException
+     * @OA\Post(
+     *      path="/auth/login",
+     *      operationId="login",
+     *      tags={"Auth"},
+     *      summary="Login user",
+     *      description="Returns token JWT for User",
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/LoginRequest")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/LoginResource")
+     *       ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Unprocessable Content",
+     *          @OA\JsonContent(ref="#/components/schemas/Unprocessable")
+     *       )
+     * )
      */
     public function login(LoginRequest $request): Application|ResponseFactory|Response
     {
