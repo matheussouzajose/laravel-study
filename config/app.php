@@ -56,6 +56,8 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    'url_callback' => env('APP_URL_CALLBACK', 'http://localhost'),
+
     'asset_url' => env('ASSET_URL'),
 
     /*

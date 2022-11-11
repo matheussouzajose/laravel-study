@@ -18,7 +18,11 @@ class EmailVerificationController extends Controller
      */
     public function sendVerificationEmail(Request $request): Application|ResponseFactory|Response
     {
-        $this->hasVerifiedEmail($request);
+        if ($request->user()->hasVerifiedEmail()) {
+            return response([
+                'message' => 'E-mail já verificado.'
+            ]);
+        }
 
         $request->user()->sendEmailVerificationNotification();
 
@@ -33,7 +37,11 @@ class EmailVerificationController extends Controller
      */
     public function verify(EmailVerificationRequest $request): Application|ResponseFactory|Response
     {
-        $this->hasVerifiedEmail($request);
+        if ($request->user()->hasVerifiedEmail()) {
+            return response([
+                'message' => 'E-mail já verificado.'
+            ]);
+        }
 
         if ($request->user()->markEmailAsVerified()) {
             event(new Verified($request->user()));
@@ -42,18 +50,5 @@ class EmailVerificationController extends Controller
         return response([
             'message' => 'O e-mail foi verificado.'
         ]);
-    }
-
-    /**
-     * @param Request $request
-     * @return void
-     */
-    private function hasVerifiedEmail(Request $request): void
-    {
-        if ($request->user()->hasVerifiedEmail()) {
-            response([
-                'message' => 'E-mail já verificado.'
-            ]);
-        }
     }
 }
