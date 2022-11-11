@@ -2,20 +2,15 @@
 
 namespace App\Notifications\Api;
 
-use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Lang;
 
 class PasswordResetNotification extends Notification
 {
+    /** @var string */
     protected string $url;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
     public function __construct(string $url)
     {
         $this->url = $url;

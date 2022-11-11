@@ -24,9 +24,6 @@ class AuthController extends Controller
         $token = \JWTAuth::attempt($credentials);
 
         return $this->responseToken($token);
-
-//        $token = $request->user()->createToken('authtoken');
-//        $plainText = $token->plainTextToken;
     }
 
     /**
