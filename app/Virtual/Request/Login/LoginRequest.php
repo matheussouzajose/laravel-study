@@ -10,7 +10,6 @@ namespace App\Virtual\Request\Login;
  *      required={"email", "password"}
  * )
  */
-
 class LoginRequest
 {
     /**

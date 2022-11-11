@@ -7,11 +7,14 @@ use App\Http\Requests\Api\LoginRequest;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-
     /**
+     * @param LoginRequest $request
+     * @return Application|ResponseFactory|Response
+     * @throws ValidationException
      * @OA\Post(
      *      path="/auth/login",
      *      operationId="login",
@@ -26,13 +29,14 @@ class AuthController extends Controller
      *          response=200,
      *          description="Successful operation",
      *          @OA\JsonContent(ref="#/components/schemas/LoginResource")
-     *       ),
+     *      ),
      *      @OA\Response(
      *          response=422,
      *          description="Unprocessable Content",
      *          @OA\JsonContent(ref="#/components/schemas/Unprocessable")
      *       )
      * )
+     *
      */
     public function login(LoginRequest $request): Application|ResponseFactory|Response
     {
@@ -45,6 +49,23 @@ class AuthController extends Controller
 
     /**
      * @return Response
+     * @OA\Post(
+     *      path="/auth/logout",
+     *      operationId="logout",
+     *      tags={"Auth"},
+     *      security={{"bearer_token":{}}},
+     *      summary="Logout user",
+     *      description="Destroy token of the user",
+     *      @OA\Response(
+     *          response=204,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *          @OA\JsonContent(ref="#/components/schemas/Error")
+     *      )
+     * )
      */
     public function logout(): Response
     {
@@ -54,6 +75,24 @@ class AuthController extends Controller
 
     /**
      * @return Application|ResponseFactory|Response
+     * @OA\Post(
+     *      path="/auth/refresh",
+     *      operationId="refresh",
+     *      tags={"Auth"},
+     *      security={{"bearer_token":{}}},
+     *      summary="Refresh user",
+     *      description="Refresh token of the user",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/LoginResource")
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *          @OA\JsonContent(ref="#/components/schemas/Error")
+     *      )
+     * )
      */
     public function refresh(): Application|ResponseFactory|Response
     {
