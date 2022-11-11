@@ -127,6 +127,100 @@
                     }
                 ]
             }
+        },
+        "/email/verification-notification": {
+            "post": {
+                "tags": [
+                    "Email"
+                ],
+                "summary": "Send email for confirmation user",
+                "description": "Send email for confirmation user",
+                "operationId": "verification-notification",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmailResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/email/verify-email/{id}/{hash}": {
+            "get": {
+                "tags": [
+                    "Email"
+                ],
+                "summary": "Confirmation user",
+                "description": "Confirmation user",
+                "operationId": "verify-email",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "user id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "hash",
+                        "in": "path",
+                        "description": "hash",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmailResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -218,6 +312,21 @@
                     }
                 },
                 "type": "object"
+            },
+            "EmailResource": {
+                "title": "Email Resource",
+                "description": "Email resource",
+                "properties": {
+                    "message": {
+                        "title": "message",
+                        "description": "Message",
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "EmailResource"
+                }
             },
             "LoginResource": {
                 "title": "Login Resource",
