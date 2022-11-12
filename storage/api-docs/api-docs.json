@@ -436,13 +436,13 @@
                         "title": "email",
                         "description": "Email of the user",
                         "type": "string",
-                        "example": "email@gmail.com.br"
+                        "example": "matheus@gmail.com"
                     },
                     "password": {
                         "title": "password",
                         "description": "Passowrd of the user",
                         "type": "string",
-                        "example": "123456"
+                        "example": "123456789"
                     }
                 },
                 "type": "object"

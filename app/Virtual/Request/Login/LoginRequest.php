@@ -16,7 +16,7 @@ class LoginRequest
      * @OA\Property(
      *      title="email",
      *      description="Email of the user",
-     *      example="email@gmail.com.br"
+     *      example="matheus@gmail.com"
      * )
      *
      * @var string
@@ -27,7 +27,7 @@ class LoginRequest
      * @OA\Property(
      *      title="password",
      *      description="Passowrd of the user",
-     *      example="123456"
+     *      example="123456789"
      * )
      *
      * @var string
