@@ -53,7 +53,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Unprocessable"
+                                    "$ref": "#/components/schemas/UnprocessableLogin"
                                 }
                             }
                         }
@@ -156,6 +156,16 @@
                                 }
                             }
                         }
+                    },
+                    "403": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -210,6 +220,130 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/password/forgot-password": {
+            "post": {
+                "tags": [
+                    "Password"
+                ],
+                "summary": "Forgot password",
+                "description": "Forgot password",
+                "operationId": "forgot-password",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PasswordRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PasswordResource"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessablePassword"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/password/reset-password": {
+            "post": {
+                "tags": [
+                    "Password"
+                ],
+                "summary": "Forgot password",
+                "description": "Reset password",
+                "operationId": "reset-password",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PasswordResetRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PasswordResource"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessablePassword"
                                 }
                             }
                         }
@@ -313,6 +447,59 @@
                 },
                 "type": "object"
             },
+            "PasswordRequest": {
+                "title": "Password user request",
+                "description": "Password user request body data",
+                "required": [
+                    "email"
+                ],
+                "properties": {
+                    "email": {
+                        "title": "email",
+                        "description": "Email of the user",
+                        "type": "string",
+                        "example": "email@gmail.com.br"
+                    }
+                },
+                "type": "object"
+            },
+            "PasswordResetRequest": {
+                "title": "Password user request",
+                "description": "Password user request body data",
+                "required": [
+                    "email",
+                    "password",
+                    "password_confirmation",
+                    "token"
+                ],
+                "properties": {
+                    "email": {
+                        "title": "email",
+                        "description": "Email of the user",
+                        "type": "string",
+                        "example": "matheus@gmail.com"
+                    },
+                    "password": {
+                        "title": "password",
+                        "description": "Password of the user",
+                        "type": "string",
+                        "example": "123456789"
+                    },
+                    "password_confirmation": {
+                        "title": "password_confirmation",
+                        "description": "Confirmation password of the user",
+                        "type": "string",
+                        "example": "123456789"
+                    },
+                    "token": {
+                        "title": "token",
+                        "description": "Token for reset password",
+                        "type": "string",
+                        "example": "441c6dbacfebdc913f5302cbc7212dde99d6aa41c271aafe9260f18256c2edf0"
+                    }
+                },
+                "type": "object"
+            },
             "EmailResource": {
                 "title": "Email Resource",
                 "description": "Email resource",
@@ -343,7 +530,7 @@
                     "name": "LoginResource"
                 }
             },
-            "Unprocessable": {
+            "UnprocessableLogin": {
                 "title": "Unprocessable login",
                 "description": "Unprocessable Content",
                 "properties": {
@@ -353,7 +540,7 @@
                         "type": "string"
                     },
                     "errors": {
-                        "$ref": "#/components/schemas/UnprocessableErrors"
+                        "$ref": "#/components/schemas/UnprocessableLoginErrors"
                     }
                 },
                 "type": "object",
@@ -361,7 +548,7 @@
                     "name": "Unprocessable"
                 }
             },
-            "UnprocessableErrors": {
+            "UnprocessableLoginErrors": {
                 "title": "Unprocessable login errors",
                 "description": "Unprocessable Content",
                 "properties": {
@@ -374,6 +561,56 @@
                     },
                     "password": {
                         "title": "password",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Unprocessable"
+                }
+            },
+            "PasswordResource": {
+                "title": "PasswordResource user",
+                "description": "PasswordResource Content",
+                "properties": {
+                    "status": {
+                        "title": "status",
+                        "description": "Status Message",
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "PasswordResource"
+                }
+            },
+            "UnprocessablePassword": {
+                "title": "Unprocessable login",
+                "description": "Unprocessable Content",
+                "properties": {
+                    "message": {
+                        "title": "message",
+                        "description": "Error Message",
+                        "type": "string"
+                    },
+                    "errors": {
+                        "$ref": "#/components/schemas/UnprocessablePasswordErrors"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Unprocessable"
+                }
+            },
+            "UnprocessablePasswordErrors": {
+                "title": "Unprocessable login errors",
+                "description": "Unprocessable Content",
+                "properties": {
+                    "email": {
+                        "title": "email",
                         "type": "array",
                         "items": {
                             "type": "string"

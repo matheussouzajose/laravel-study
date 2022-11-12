@@ -11,7 +11,7 @@ namespace App\Virtual\Resource\Login;
  *     )
  * )
  */
-class Unprocessable
+class UnprocessableLogin
 {
     /**
      * @OA\Property(
@@ -28,7 +28,7 @@ class Unprocessable
      *     title="message",
      *     description="Error Message"
      * )
-     * @var UnprocessableErrors
+     * @var UnprocessableLoginErrors
      */
-    private UnprocessableErrors $errors;
+    private UnprocessableLoginErrors $errors;
 }

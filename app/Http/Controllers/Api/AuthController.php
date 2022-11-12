@@ -33,7 +33,7 @@ class AuthController extends Controller
      *      @OA\Response(
      *          response=422,
      *          description="Unprocessable Content",
-     *          @OA\JsonContent(ref="#/components/schemas/Unprocessable")
+     *          @OA\JsonContent(ref="#/components/schemas/UnprocessableLogin")
      *       )
      * )
      *

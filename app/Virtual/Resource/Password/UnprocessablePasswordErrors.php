@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Virtual\Resource\Login;
+namespace App\Virtual\Resource\Password;
 
 /**
  * @OA\Schema(
@@ -11,7 +11,7 @@ namespace App\Virtual\Resource\Login;
  *     )
  * )
  */
-class UnprocessableErrors
+class UnprocessablePasswordErrors
 {
     /**
      * @OA\Property(
@@ -25,17 +25,4 @@ class UnprocessableErrors
      * @var array
      */
     private array $email;
-
-    /**
-     * @OA\Property(
-     *     property="password",
-     *     title="password",
-     *     @OA\Items(
-     *         type="string",
-     *     )
-     * )
-     *
-     * @var array
-     */
-    private array $password;
 }

@@ -20,6 +20,33 @@ class NewPasswordController extends Controller
      * @param NewPasswordForgotRequest $request
      * @return Response|Application|ResponseFactory
      * @throws ValidationException
+     * @OA\Post(
+     *      path="/password/forgot-password",
+     *      operationId="forgot-password",
+     *      tags={"Password"},
+     *      security={{"bearer_token":{}}},
+     *      summary="Forgot password",
+     *      description="Forgot password",
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/PasswordRequest")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/PasswordResource")
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(ref="#/components/schemas/Error")
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Unprocessable Content",
+     *          @OA\JsonContent(ref="#/components/schemas/UnprocessablePassword")
+     *       )
+     * )
      */
     public function forgotPassword(NewPasswordForgotRequest $request): Response|Application|ResponseFactory
     {
@@ -41,6 +68,33 @@ class NewPasswordController extends Controller
     /**
      * @param NewPasswordResetRequest $request
      * @return Response|Application|ResponseFactory
+     * @OA\Post(
+     *      path="/password/reset-password",
+     *      operationId="reset-password",
+     *      tags={"Password"},
+     *      security={{"bearer_token":{}}},
+     *      summary="Forgot password",
+     *      description="Reset password",
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/PasswordResetRequest")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/PasswordResource")
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(ref="#/components/schemas/Error")
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Unprocessable Content",
+     *          @OA\JsonContent(ref="#/components/schemas/UnprocessablePassword")
+     *       )
+     * )
      */
     public function reset(NewPasswordResetRequest $request): Response|Application|ResponseFactory
     {
@@ -60,12 +114,12 @@ class NewPasswordController extends Controller
 
         if ($status == Password::PASSWORD_RESET) {
             return response([
-                'message' => 'Redefinição de senha com sucesso'
+                'status' => 'Redefinição de senha com sucesso'
             ]);
         }
 
         return response([
-            'message' => __($status)
-        ], 500);
+            'status' => __($status)
+        ], 422);
     }
 }
