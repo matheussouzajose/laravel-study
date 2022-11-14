@@ -24,7 +24,6 @@ class NewPasswordController extends Controller
      *      path="/password/forgot-password",
      *      operationId="forgot-password",
      *      tags={"Password"},
-     *      security={{"bearer_token":{}}},
      *      summary="Forgot password",
      *      description="Forgot password",
      *     @OA\RequestBody(
@@ -72,7 +71,6 @@ class NewPasswordController extends Controller
      *      path="/password/reset-password",
      *      operationId="reset-password",
      *      tags={"Password"},
-     *      security={{"bearer_token":{}}},
      *      summary="Forgot password",
      *      description="Reset password",
      *     @OA\RequestBody(

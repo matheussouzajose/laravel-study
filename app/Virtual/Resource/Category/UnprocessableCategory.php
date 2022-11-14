@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Virtual\Resource\Password;
+namespace App\Virtual\Resource\Category;
 
 /**
  * @OA\Schema(
@@ -11,7 +11,7 @@ namespace App\Virtual\Resource\Password;
  *     )
  * )
  */
-class UnprocessablePassword
+class UnprocessableCategory
 {
     /**
      * @OA\Property(
@@ -28,7 +28,7 @@ class UnprocessablePassword
      *     property="errors",
      *     title="errors",
      *     @OA\Property(
-     *         property="email",
+     *         property="name",
      *         type="array",
      *         @OA\Items(
      *             type="string"

@@ -16,28 +16,41 @@ class CategoryController extends Controller
     {
     }
 
+    /**
+     * @param Request $request
+     * @return CategoryResource
+     */
     public function index(Request $request): CategoryResource
     {
         $perPage = $request->get('per_page');
-        $categories = $this->category->paginate($perPage);
 
-        return new CategoryResource($categories);
+        $categories = $this->category->when($request->has('search'), function ($query) use ($request) {
+            $query->where('name', 'LIKE', "%{$request->get('search')}%");
+        });
+
+        return new CategoryResource($categories->paginate($perPage));
     }
 
+    /**
+     * @param CategoryRequest $request
+     * @return CategoryJson
+     */
     public function store(CategoryRequest $request): CategoryJson
     {
         $category = $this->category->create($request->validated());
         return new CategoryJson($category);
     }
 
+    /**
+     * @param Category $category
+     * @return CategoryJson
+     */
     public function show(Category $category): CategoryJson
     {
         return new CategoryJson($category);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
      * @param CategoryRequest $request
      * @param Category $category
      * @return CategoryJson
@@ -49,8 +62,6 @@ class CategoryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
      * @param Category $category
      * @return Response
      */
