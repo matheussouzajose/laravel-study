@@ -7,18 +7,18 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use JsonSerializable;
 
-class CategoryResource extends ResourceCollection
+class ProductResource extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return array|Arrayable|JsonSerializable
      */
     public function toArray($request): array|JsonSerializable|Arrayable
     {
         return [
-            'data' => $this->collection->map(fn($category) => new CategoryJson($category)),
+            'data' => $this->collection->map(fn($product) => new ProductJson($product)),
             'links' => [
                 'self' => 'link-value',
             ],

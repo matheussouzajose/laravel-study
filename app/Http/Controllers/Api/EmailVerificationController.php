@@ -7,8 +7,7 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Http\{Request, Response};
 
 class EmailVerificationController extends Controller
 {

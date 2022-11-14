@@ -3,16 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\NewPasswordForgotRequest;
-use App\Http\Requests\Api\NewPasswordResetRequest;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use App\Http\Requests\Api\{NewPasswordResetRequest, NewPasswordForgotRequest};
+use Illuminate\Support\Facades\{Hash, Password};
 
 class NewPasswordController extends Controller
 {

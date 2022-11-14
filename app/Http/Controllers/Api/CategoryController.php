@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\CategoryRequest;
-use App\Http\Resources\Api\CategoryJson;
-use App\Http\Resources\Api\CategoryResource;
 use App\Models\Category;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\StoreCategoryRequest;
+use App\Http\Resources\Api\{CategoryJson, CategoryResource};
+use Illuminate\Http\{Request, Response};
 
 class CategoryController extends Controller
 {
@@ -16,26 +14,18 @@ class CategoryController extends Controller
     {
     }
 
-    /**
-     * @param Request $request
-     * @return CategoryResource
-     */
     public function index(Request $request): CategoryResource
     {
         $perPage = $request->get('per_page');
 
         $categories = $this->category->when($request->has('search'), function ($query) use ($request) {
             $query->where('name', 'LIKE', "%{$request->get('search')}%");
-        });
+        })->paginate($perPage);
 
-        return new CategoryResource($categories->paginate($perPage));
+        return new CategoryResource($categories);
     }
 
-    /**
-     * @param CategoryRequest $request
-     * @return CategoryJson
-     */
-    public function store(CategoryRequest $request): CategoryJson
+    public function store(StoreCategoryRequest $request): CategoryJson
     {
         $category = $this->category->create($request->validated());
         return new CategoryJson($category);
@@ -51,11 +41,11 @@ class CategoryController extends Controller
     }
 
     /**
-     * @param CategoryRequest $request
+     * @param StoreCategoryRequest $request
      * @param Category $category
      * @return CategoryJson
      */
-    public function update(CategoryRequest $request, Category $category): CategoryJson
+    public function update(StoreCategoryRequest $request, Category $category): CategoryJson
     {
         $category->update($request->validated());
         return new CategoryJson($category);
