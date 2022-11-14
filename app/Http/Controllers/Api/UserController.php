@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Category;
+use App\Http\Requests\Api\StoreUserRequest;
+use App\Http\Requests\Api\UpdateUserRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\StoreCategoryRequest;
 use App\Models\User;
-use App\Http\Resources\Api\{CategoryJson, CategoryResource};
+use App\Http\Resources\Api\{CategoryJson, UserJson, UserResource};
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\{Request, Response};
 
 class UserController extends Controller
@@ -15,7 +16,11 @@ class UserController extends Controller
     {
     }
 
-    public function index(Request $request): CategoryResource
+    /**
+     * @param Request $request
+     * @return UserResource
+     */
+    public function index(Request $request): UserResource
     {
         $perPage = $request->get('per_page');
 
@@ -23,42 +28,55 @@ class UserController extends Controller
             $query->where('name', 'LIKE', "%{$request->get('search')}%");
         })->paginate($perPage);
 
-        return new CategoryResource($categories);
-    }
-
-    public function store(StoreCategoryRequest $request): CategoryJson
-    {
-        $user = $this->user->create($request->validated());
-        return new CategoryJson($user);
+        return new UserResource($categories);
     }
 
     /**
-     * @param Category $user
+     * @param StoreUserRequest $request
      * @return CategoryJson
      */
-    public function show(Category $user): CategoryJson
+    public function store(StoreUserRequest $request): CategoryJson
     {
-        return new CategoryJson($user);
+        $user = $request->validated();
+        $user['role'] = $this->user::ROLE_ADMIN;
+        return new CategoryJson($this->user->create($user));
     }
 
     /**
-     * @param StoreCategoryRequest $request
-     * @param Category $user
-     * @return CategoryJson
+     * @param User $user
+     * @return UserJson
      */
-    public function update(StoreCategoryRequest $request, Category $user): CategoryJson
+    public function show(User $user): UserJson
+    {
+        return new UserJson($user);
+    }
+
+    /**
+     * @param UpdateUserRequest $request
+     * @param User $user
+     * @return UserJson
+     */
+    public function update(UpdateUserRequest $request, User $user)
     {
         $user->update($request->validated());
-        return new CategoryJson($user);
+        return new UserJson($user);
     }
 
     /**
-     * @param Category $user
+     * @param User $user
      * @return Response
      */
-    public function destroy(Category $user): Response
+    public function destroy(User $user): Response
     {
         $user->delete();
         return response()->noContent();
+    }
+
+    /**
+     * @return UserJson
+     */
+    public function me()
+    {
+        return new UserJson(Auth::user());
     }
 }

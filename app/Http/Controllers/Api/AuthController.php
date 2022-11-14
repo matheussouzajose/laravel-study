@@ -10,10 +10,13 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\{Auth, Hash};
-use App\Http\Requests\Api\{LoginRequest, RegisterUserRequest};
+use App\Http\Requests\Api\{LoginRequest, StoreUserRequest};
 
 class AuthController extends Controller
 {
+    /**
+     * @param User $user
+     */
     public function __construct(private readonly User $user)
     {
     }
@@ -26,10 +29,26 @@ class AuthController extends Controller
     public function login(LoginRequest $request): Application|ResponseFactory|Response
     {
         $request->authenticate();
-        $credentials = $request->credentials();
-        $token = \JWTAuth::attempt($credentials);
+        $token = \JWTAuth::attempt($request->credentials());
 
         return $this->responseToken($token, Auth::user());
+    }
+
+    /**
+     * @param StoreUserRequest $registerUserRequest
+     * @return Response|Application|ResponseFactory
+     */
+    public function register(StoreUserRequest $registerUserRequest): Response|Application|ResponseFactory
+    {
+        $user = $this->user->create($registerUserRequest->validated());
+        $token = \JWTAuth::attempt($registerUserRequest->credentials());
+
+        return response([
+            'data' => [
+                'token' => $token,
+                'user' => new UserJson($user)
+            ]
+        ], 201);
     }
 
     /**
@@ -39,26 +58,6 @@ class AuthController extends Controller
     {
         \Auth::guard('api')->logout();
         return response()->noContent();
-    }
-
-    /**
-     * @param RegisterUserRequest $registerUserRequest
-     * @return Response|Application|ResponseFactory
-     */
-    public function register(RegisterUserRequest $registerUserRequest): Response|Application|ResponseFactory
-    {
-        $user = $registerUserRequest->validated();
-        $user['password'] = Hash::make($user['password']);
-
-        $user = $this->user->create($user);
-        $token = \JWTAuth::attempt($registerUserRequest->credentials());
-
-        return response([
-            'data' => [
-                'token' => $token,
-                'user' => new UserJson($user)
-            ]
-        ], 201);
     }
 
     /**

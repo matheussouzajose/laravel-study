@@ -17,6 +17,7 @@ class UserSeeder extends Seeder
     {
         User::factory()
             ->unverified()
+            ->user()
             ->create([
                 'name' => 'Matheus S. Jose',
                 'email' => 'matheus@gmail.com'
@@ -24,9 +25,10 @@ class UserSeeder extends Seeder
 
         User::factory()
             ->unverified()
+            ->admin()
             ->create([
-                'name' => 'Matheus S. Jose',
-                'email' => 'matheus@gmail.com.br'
+                'name' => 'Admin',
+                'email' => 'admin@gmail.com.br'
             ]);
     }
 }

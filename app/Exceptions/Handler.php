@@ -55,23 +55,16 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $e)
     {
         if ($e instanceof AuthorizationException) {
-            return response([
-                "error" => "Não autorizado."
-            ], 403);
+            return authorization_exception("Não autorizado.");
         }
 
         if ($e instanceof ModelNotFoundException) {
-            return response([
-                "error" => "Não encontrado."
-            ], 404);
+            return model_not_found_exception("Não encontrado.");
         }
 
         if ($e instanceof NotFoundHttpException) {
-            return response([
-                "error" => "Endponit não existe."
-            ], 404);
+            return not_found_http_exception("Endpoint não encontrado.");
         }
-
 
         return parent::render($request, $e);
     }

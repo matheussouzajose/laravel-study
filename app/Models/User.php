@@ -14,6 +14,9 @@ class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    const ROLE_USER = 1;
+    const ROLE_ADMIN = 2;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -23,6 +26,9 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'role',
+        'phone',
+        'document_number'
     ];
 
     /**
@@ -41,7 +47,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'datetime'
     ];
 
     /**
@@ -63,13 +69,20 @@ class User extends Authenticatable implements JWTSubject
         ];
     }
 
-    public function sendEmailVerificationNotification()
+    /**
+     * @return void
+     */
+    public function sendEmailVerificationNotification(): void
     {
         $url = config('app.url_callback');
         $this->notify(new UserEmailVerification($url));
     }
 
-    public function sendPasswordResetNotification($token)
+    /**
+     * @param $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token): void
     {
         $url = config('app.url_callback');
         $this->notify(new PasswordResetNotification("{$url}/reset-password?token={$token}"));
