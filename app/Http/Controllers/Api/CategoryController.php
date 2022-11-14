@@ -14,6 +14,10 @@ class CategoryController extends Controller
     {
     }
 
+    /**
+     * @param Request $request
+     * @return CategoryResource
+     */
     public function index(Request $request): CategoryResource
     {
         $perPage = $request->get('per_page');
@@ -25,6 +29,10 @@ class CategoryController extends Controller
         return new CategoryResource($categories);
     }
 
+    /**
+     * @param StoreCategoryRequest $request
+     * @return CategoryJson
+     */
     public function store(StoreCategoryRequest $request): CategoryJson
     {
         $category = $this->category->create($request->validated());

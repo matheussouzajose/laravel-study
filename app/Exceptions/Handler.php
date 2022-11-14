@@ -66,6 +66,13 @@ class Handler extends ExceptionHandler
             ], 404);
         }
 
+        if ($e instanceof NotFoundHttpException) {
+            return response([
+                "error" => "Endponit não existe."
+            ], 404);
+        }
+
+
         return parent::render($request, $e);
     }
 }
