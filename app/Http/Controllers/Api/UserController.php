@@ -6,7 +6,9 @@ use App\Http\Requests\Api\StoreUserRequest;
 use App\Http\Requests\Api\UpdateUserRequest;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Http\Resources\Api\{CategoryJson, UserJson, UserResource};
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use App\Http\Resources\Api\{UserJson, UserResource};
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\{Request, Response};
 
@@ -24,30 +26,36 @@ class UserController extends Controller
     {
         $perPage = $request->get('per_page');
 
-        $categories = $this->user->when($request->has('search'), function ($query) use ($request) {
+        $users = $this->user->when($request->has('search'), function ($query) use ($request) {
             $query->where('name', 'LIKE', "%{$request->get('search')}%");
         })->paginate($perPage);
 
-        return new UserResource($categories);
-    }
-
-    /**
-     * @param StoreUserRequest $request
-     * @return CategoryJson
-     */
-    public function store(StoreUserRequest $request): CategoryJson
-    {
-        $user = $request->validated();
-        $user['role'] = $this->user::ROLE_ADMIN;
-        return new CategoryJson($this->user->create($user));
+        return new UserResource($users);
     }
 
     /**
      * @param User $user
      * @return UserJson
+     * public function store(StoreUserRequest $request): UserJson
+     * $user = $request->validated();
+     * $user['role'] = $this->user::ROLE_ADMIN;
+     * return new UserJson->user->create($user));
+     * }
+     *
+     * /**
      */
     public function show(User $user): UserJson
     {
+        return new UserJson($user);
+    }
+
+    /**
+     * @param StoreUserRequest $registerUserRequest
+     * @return UserJson
+     */
+    public function store(StoreUserRequest $registerUserRequest): UserJson
+    {
+        $user = $this->user->create($registerUserRequest->validated());
         return new UserJson($user);
     }
 

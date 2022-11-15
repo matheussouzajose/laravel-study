@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -28,7 +29,17 @@ class UserSeeder extends Seeder
             ->admin()
             ->create([
                 'name' => 'Admin',
-                'email' => 'admin@gmail.com.br'
+                'email' => 'admin@gmail.com.br',
+                'company_id' => 1
+            ]);
+
+        User::factory()
+            ->unverified()
+            ->admin()
+            ->create([
+                'name' => 'Admin 2',
+                'email' => 'admin 2@gmail.com.br',
+                'company_id' => 2
             ]);
     }
 }

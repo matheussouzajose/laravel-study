@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Api\{StoreProductCover, StoreProductRequest, UpdateProductRequest};
 use App\Http\Resources\Api\{ProductJson, ProductResource};

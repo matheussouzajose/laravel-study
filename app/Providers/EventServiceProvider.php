@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
+use App\Observers\CategoryObserver;
 use App\Observers\ProductObserver;
 use App\Observers\UserObserver;
 use Illuminate\Auth\Events\Registered;
@@ -45,6 +47,7 @@ class EventServiceProvider extends ServiceProvider
 
     protected $observers = [
         Product::class => [ProductObserver::class],
-        User::class => [UserObserver::class]
+        User::class => [UserObserver::class],
+        Category::class => [CategoryObserver::class],
     ];
 }

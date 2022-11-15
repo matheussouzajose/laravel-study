@@ -4,7 +4,10 @@ namespace App\Models;
 
 use App\Notifications\Api\PasswordResetNotification;
 use App\Notifications\Api\UserEmailVerification;
+use App\Tenant\TenantModels;
+use App\Tenant\TenantScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -12,7 +15,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, TenantModels;
 
     const ROLE_USER = 1;
     const ROLE_ADMIN = 2;
@@ -49,6 +52,11 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime'
     ];
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
+    }
 
     /**
      * @return mixed

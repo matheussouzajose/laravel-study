@@ -27,6 +27,7 @@ class ProductJson extends JsonResource
             'price_formatted' => $this->price_formatted,
             'description' => $this->description,
             'stock' => $this->stock,
+            'company' => $this->company,
             'category' => $this->category,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

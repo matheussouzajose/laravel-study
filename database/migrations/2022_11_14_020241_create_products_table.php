@@ -25,6 +25,9 @@ return new class extends Migration
             $table->integer('category_id')->unsigned();
             $table->foreign('category_id')->references('id')->on('categories');
 
+            $table->integer('company_id')->unsigned()->nullable();
+            $table->foreign('company_id')->references('id')->on('companies');
+
             $table->softDeletes();
             $table->timestamps();
         });

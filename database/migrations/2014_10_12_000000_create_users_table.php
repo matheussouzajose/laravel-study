@@ -23,6 +23,10 @@ return new class extends Migration
             $table->string('phone')->default('');
             $table->string('document_number',11)->default('');
             $table->rememberToken();
+
+            $table->integer('company_id')->unsigned()->nullable();
+            $table->foreign('company_id')->references('id')->on('companies');
+
             $table->timestamps();
         });
     }

@@ -20,8 +20,10 @@ class ProductSeeder extends Seeder
         Product::factory(100)
             ->make()
             ->each(function (Product $product) use ($categories) {
-                $category = $categories->random();
+                $tenantId = rand(1, 2);
+                $category = $categories->where('company_id', $tenantId)->random();
                 $product->category_id = $category->id;
+                $product->company_id = $tenantId;
                 $product->save();
             });
     }

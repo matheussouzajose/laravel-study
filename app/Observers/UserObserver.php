@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserObserver
@@ -10,6 +11,11 @@ class UserObserver
     public function creating(User $user): void
     {
         $user->password = Hash::make($user->password);
+        if (Auth::hasUser()) {
+            if ($companyId = Auth::user()->company_id) {
+                $user->company_id = $companyId;
+            }
+        }
     }
 
     /**

@@ -20,6 +20,7 @@ class CategoryJson extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'company' => $this->company,
             'products' => $this->products,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

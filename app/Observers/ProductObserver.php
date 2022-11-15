@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class ProductObserver
@@ -10,6 +11,11 @@ class ProductObserver
     public function creating(Product $product): void
     {
         $product->slug = Str::slug($product->name);
+        if (Auth::hasUser()) {
+            if ($companyId = Auth::user()->company_id) {
+                $product->company_id = $companyId;
+            }
+        }
     }
 
     /**

@@ -25,6 +25,7 @@ class UserJson extends JsonResource
             'phone' => $this->phone,
             'document_number' => $this->document_number,
             'is_admin' => $this->role === User::ROLE_ADMIN,
+            'company' => $this->company,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at
