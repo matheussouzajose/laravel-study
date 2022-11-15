@@ -9,8 +9,14 @@ class CategoryObserver
 {
     public function creating(Category $category): void
     {
+        $hasUser = Auth::hasUser();
         $company = \Tenant::getTenant();
-        if ($company) {
+
+        if ($hasUser || $company) {
+            if (!$company) {
+                $userAuth = Auth::user();
+                \Tenant::setTenant($userAuth->company);
+            }
             $category->company_id = $company->id;
         }
     }

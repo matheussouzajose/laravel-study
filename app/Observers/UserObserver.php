@@ -12,8 +12,14 @@ class UserObserver
     {
         $user->password = Hash::make($user->password);
 
+        $hasUser = Auth::hasUser();
         $company = \Tenant::getTenant();
-        if ($company) {
+
+        if ($hasUser || $company) {
+            if (!$company) {
+                $userAuth = Auth::user();
+                \Tenant::setTenant($userAuth->company);
+            }
             $user->company_id = $company->id;
         }
     }

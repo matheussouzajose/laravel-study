@@ -11,8 +11,15 @@ class ProductObserver
     public function creating(Product $product): void
     {
         $product->slug = Str::slug($product->name);
+
+        $hasUser = Auth::hasUser();
         $company = \Tenant::getTenant();
-        if ($company) {
+
+        if ($hasUser || $company) {
+            if (!$company) {
+                $userAuth = Auth::user();
+                \Tenant::setTenant($userAuth->company);
+            }
             $product->company_id = $company->id;
         }
     }
