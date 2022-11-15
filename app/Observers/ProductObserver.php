@@ -19,6 +19,7 @@ class ProductObserver
             if (!$company) {
                 $userAuth = Auth::user();
                 \Tenant::setTenant($userAuth->company);
+                $company = \Tenant::getTenant();
             }
             $product->company_id = $company->id;
         }

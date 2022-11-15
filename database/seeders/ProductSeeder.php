@@ -20,7 +20,7 @@ class ProductSeeder extends Seeder
         \Tenant::setTenant(null);
         $categories = Category::all();
 
-        Product::factory(100)
+        Product::factory(20)
             ->make()
             ->each(function (Product $product) use ($categories) {
                 $tenantId = rand(1, 2);

@@ -19,6 +19,7 @@ class UserObserver
             if (!$company) {
                 $userAuth = Auth::user();
                 \Tenant::setTenant($userAuth->company);
+                $company = \Tenant::getTenant();
             }
             $user->company_id = $company->id;
         }

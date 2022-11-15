@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Company;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -21,7 +20,7 @@ class UserSeeder extends Seeder
             ->user()
             ->create([
                 'name' => 'Matheus S. Jose',
-                'email' => 'matheus@gmail.com'
+                'email' => 'matheus@gmail.com.br'
             ]);
 
         \Tenant::setTenant(Company::find(1));
@@ -29,9 +28,8 @@ class UserSeeder extends Seeder
             ->unverified()
             ->admin()
             ->create([
-                'name' => 'Admin',
-                'email' => 'admin@gmail.com.br',
-                'company_id' => 1
+                'name' => 'Admin Tenant',
+                'email' => 'admin.tenant@gmail.com.br'
             ]);
 
         \Tenant::setTenant(Company::find(2));
@@ -39,9 +37,8 @@ class UserSeeder extends Seeder
             ->unverified()
             ->admin()
             ->create([
-                'name' => 'Admin 2',
-                'email' => 'admin 2@gmail.com.br',
-                'company_id' => 2
+                'name' => 'Admin Tenant 2',
+                'email' => 'admin.tenant2@gmail.com.br'
             ]);
     }
 }

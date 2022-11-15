@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class StoreProductCover extends FormRequest
 {
@@ -23,9 +25,17 @@ class StoreProductCover extends FormRequest
      */
     public function rules(): array
     {
+        $companyId = Auth::user()->company_id;
+
         return [
             'cover' => 'required|file|mimes:jpg,jpeg,bmp,png',
-            'product_id' => 'required|exists:products,id',
+            'product_id' => [
+                'numeric',
+                'required',
+                Rule::exists('products', 'id')
+                    ->withoutTrashed()
+                    ->where('company_id', $companyId)
+            ]
         ];
     }
 }
