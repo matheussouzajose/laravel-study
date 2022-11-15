@@ -24,6 +24,7 @@ class UserSeeder extends Seeder
                 'email' => 'matheus@gmail.com'
             ]);
 
+        \Tenant::setTenant(Company::find(1));
         User::factory()
             ->unverified()
             ->admin()
@@ -33,6 +34,7 @@ class UserSeeder extends Seeder
                 'company_id' => 1
             ]);
 
+        \Tenant::setTenant(Company::find(2));
         User::factory()
             ->unverified()
             ->admin()

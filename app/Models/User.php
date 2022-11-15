@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Notifications\Api\PasswordResetNotification;
 use App\Notifications\Api\UserEmailVerification;
 use App\Tenant\TenantModels;
-use App\Tenant\TenantScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -52,11 +51,6 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime'
     ];
-
-    public function company(): BelongsTo
-    {
-        return $this->belongsTo(Company::class);
-    }
 
     /**
      * @return mixed

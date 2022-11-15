@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\Company;
 use App\Models\Product;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -16,7 +17,9 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
+        \Tenant::setTenant(null);
         $categories = Category::all();
+
         Product::factory(100)
             ->make()
             ->each(function (Product $product) use ($categories) {

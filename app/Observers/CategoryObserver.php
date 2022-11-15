@@ -9,10 +9,9 @@ class CategoryObserver
 {
     public function creating(Category $category): void
     {
-        if (Auth::hasUser()) {
-            if ($companyId = Auth::user()->company_id) {
-                $category->company_id = $companyId;
-            }
+        $company = \Tenant::getTenant();
+        if ($company) {
+            $category->company_id = $company->id;
         }
     }
 

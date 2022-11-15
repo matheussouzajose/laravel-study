@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\Company;
 use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
@@ -14,12 +15,10 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        Category::factory(5)->create([
-            'company_id' => 1
-        ]);
+        \Tenant::setTenant(Company::find(1));
+        Category::factory(5)->create();
 
-        Category::factory(5)->create([
-            'company_id' => 2
-        ]);
+        \Tenant::setTenant(Company::find(2));
+        Category::factory(5)->create();
     }
 }

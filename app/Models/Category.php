@@ -23,13 +23,4 @@ class Category extends Model
     {
         return $this->hasMany(Product::class);
     }
-
-    /**
-     * @return BelongsTo
-     */
-    public function company(): BelongsTo
-    {
-        return $this->belongsTo(Company::class);
-    }
-
 }

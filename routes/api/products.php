@@ -3,7 +3,7 @@
 use App\Http\Controllers\Api\ProductController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => 'auth:api'], function () {
+Route::group(['middleware' => ['auth:api']], function () {
 
     Route::apiResource('products', ProductController::class)
         ->middleware(['can:admin'])->only(['store', 'update', 'destroy']);

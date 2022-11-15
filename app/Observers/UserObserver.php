@@ -11,10 +11,10 @@ class UserObserver
     public function creating(User $user): void
     {
         $user->password = Hash::make($user->password);
-        if (Auth::hasUser()) {
-            if ($companyId = Auth::user()->company_id) {
-                $user->company_id = $companyId;
-            }
+
+        $company = \Tenant::getTenant();
+        if ($company) {
+            $user->company_id = $company->id;
         }
     }
 

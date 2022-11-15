@@ -23,14 +23,6 @@ class Product extends Model
     }
 
     /**
-     * @return BelongsTo
-     */
-    public function company(): BelongsTo
-    {
-        return $this->belongsTo(Company::class);
-    }
-
-    /**
      * @return string
      */
     public function getPriceFormattedAttribute(): string
