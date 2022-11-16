@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Category;
+use Algolia\AlgoliaSearch\SearchIndex;
 use App\Models\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Api\{StoreProductCover, StoreProductRequest, UpdateProductRequest};
 use App\Http\Resources\Api\{ProductJson, ProductResource};
@@ -27,9 +26,12 @@ class ProductController extends Controller
     {
         $perPage = $request->get('per_page');
 
-        $products = $this->product->when($request->has('search'), function ($query) use ($request) {
-            $query->where('name', 'LIKE', "%{$request->get('search')}%");
+        $products = $this->product->when($request->has('query'), function ($query) use ($request) {
+            $query->where('name', 'LIKE', "%{$request->get('query')}%");
         })->paginate($perPage);
+
+//        $products = $this->product->search($request->get('query'))
+//            ->paginate($perPage);
 
         return new ProductResource($products);
     }

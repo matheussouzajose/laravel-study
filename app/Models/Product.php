@@ -6,10 +6,11 @@ use App\Tenant\TenantModels;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Laravel\Scout\Searchable;
 
 class Product extends Model
 {
-    use HasFactory, TenantModels;
+    use HasFactory, TenantModels, Searchable;
 
     /** @var string[] */
     protected $fillable = ['name', 'slug', 'cover', 'price', 'description', 'stock', 'category_id', 'company_id'];

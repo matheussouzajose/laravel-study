@@ -19,9 +19,6 @@ class ProductResource extends ResourceCollection
     {
         return [
             'data' => $this->collection->map(fn($product) => new ProductJson($product)),
-            'links' => [
-                'self' => 'link-value',
-            ],
         ];
     }
 }
