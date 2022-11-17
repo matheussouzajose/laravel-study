@@ -3,26 +3,21 @@
 namespace App\Observers;
 
 use App\Models\Product;
-use Illuminate\Support\Facades\Auth;
+use App\Tenant\TenantObserver;
 use Illuminate\Support\Str;
 
 class ProductObserver
 {
+    use TenantObserver;
+
+    /**
+     * @param Product $product
+     * @return void
+     */
     public function creating(Product $product): void
     {
         $product->slug = Str::slug($product->name);
-
-        $hasUser = Auth::hasUser();
-        $company = \Tenant::getTenant();
-
-        if ($hasUser || $company) {
-            if (!$company) {
-                $userAuth = Auth::user();
-                \Tenant::setTenant($userAuth->company);
-                $company = \Tenant::getTenant();
-            }
-            $product->company_id = $company->id;
-        }
+        $product->company_id = $this->getCompanyId();
     }
 
     /**
@@ -35,6 +30,10 @@ class ProductObserver
     {
     }
 
+    /**
+     * @param Product $product
+     * @return void
+     */
     public function updating(Product $product)
     {
 

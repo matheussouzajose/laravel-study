@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Mail\UserRegistered;
 use App\Models\User;
+use App\Tenant\TenantObserver;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -11,23 +12,12 @@ use Illuminate\Support\Facades\Mail;
 class UserObserver
 {
 
-    protected function getCompanyId(): ?int
-    {
-        $hasUser = Auth::hasUser();
-        $company = \Tenant::getTenant();
+    use TenantObserver;
 
-        if ($hasUser || $company) {
-            if (!$company) {
-                $userAuth = Auth::user();
-                \Tenant::setTenant($userAuth->company);
-                $company = \Tenant::getTenant();
-            }
-            return $company->id;
-        }
-
-        return null;
-    }
-
+    /**
+     * @param User $user
+     * @return void
+     */
     public function creating(User $user): void
     {
         $user->password = Hash::make($user->password);
@@ -45,6 +35,10 @@ class UserObserver
         Mail::to($user->email)->send(new UserRegistered($user));
     }
 
+    /**
+     * @param User $user
+     * @return void
+     */
     public function updating(User $user)
     {
 

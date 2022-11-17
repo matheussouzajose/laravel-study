@@ -3,23 +3,21 @@
 namespace App\Observers;
 
 use App\Models\Category;
+use App\Tenant\TenantObserver;
 use Illuminate\Support\Facades\Auth;
 
 class CategoryObserver
 {
+    use TenantObserver;
+
+    /**
+     * @param Category $category
+     * @return void
+     */
     public function creating(Category $category): void
     {
-        $hasUser = Auth::hasUser();
-        $company = \Tenant::getTenant();
+        $category->company_id = $this->getCompanyId();
 
-        if ($hasUser || $company) {
-            if (!$company) {
-                $userAuth = Auth::user();
-                \Tenant::setTenant($userAuth->company);
-                $company = \Tenant::getTenant();
-            }
-            $category->company_id = $company->id;
-        }
     }
 
     /**
@@ -33,6 +31,10 @@ class CategoryObserver
 
     }
 
+    /**
+     * @param Category $category
+     * @return void
+     */
     public function updating(Category $category)
     {
 
