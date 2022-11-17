@@ -33,7 +33,6 @@ class ProductObserver
      */
     public function created(Product $product)
     {
-
     }
 
     public function updating(Product $product)

@@ -16,6 +16,12 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     Route::delete('products/{product}/cover', [ProductController::class, 'destroyCover'])
         ->middleware(['can:admin']);
+
+    Route::post('products/stock-entries', [ProductController::class, 'stockEntries'])
+        ->middleware(['can:admin']);
+
+    Route::post('products/stock-outputs', [ProductController::class, 'stockOutPuts'])
+        ->middleware(['can:admin']);
 });
 
 

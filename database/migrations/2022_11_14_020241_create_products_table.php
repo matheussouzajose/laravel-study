@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('description')->nullable();;
             $table->string('cover')->nullable();
             $table->decimal('price')->default("0.00");
-            $table->integer('stock')->default(0);
+            $table->integer('stock')->default(0)->unsigned();
 
             $table->integer('category_id')->unsigned();
             $table->foreign('category_id')->references('id')->on('categories');

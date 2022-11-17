@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\StockEntryCreated;
+use App\Listeners\DecrementStockEntryListener;
+use App\Listeners\IncrementStockEntryListener;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
@@ -23,6 +26,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        StockEntryCreated::class => [
+            IncrementStockEntryListener::class
+        ]
     ];
 
     /**

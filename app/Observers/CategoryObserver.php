@@ -16,6 +16,7 @@ class CategoryObserver
             if (!$company) {
                 $userAuth = Auth::user();
                 \Tenant::setTenant($userAuth->company);
+                $company = \Tenant::getTenant();
             }
             $category->company_id = $company->id;
         }

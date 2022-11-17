@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use Algolia\AlgoliaSearch\SearchIndex;
+use App\Mail\StockGreatherMax;
 use App\Models\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\Api\{StoreProductCover, StoreProductRequest, UpdateProductRequest};
+use App\Http\Requests\Api\{StoreProductCover, StoreProductRequest, StoreProductStock, UpdateProductRequest};
 use App\Http\Resources\Api\{ProductJson, ProductResource};
 use Illuminate\Http\{Request, Response};
 
@@ -109,5 +111,51 @@ class ProductController extends Controller
         $product->update(['cover' => null]);
 
         return response()->noContent();
+    }
+
+    /**
+     * @param StoreProductStock $productStock
+     * @return Response|Application|ResponseFactory
+     */
+    public function stockEntries(StoreProductStock $productStock): Response|Application|ResponseFactory
+    {
+        $productStock = $productStock->validated();
+        $product = $this->product->find($productStock['product_id']);
+
+        $product->stock = $product->stock + $productStock['stock'];;
+        $product->save();
+
+        return response([
+            'data' => [
+                'stock' => $product->stock
+            ]
+        ]);
+    }
+
+    /**
+     * @param StoreProductStock $productStock
+     * @return Response|Application|ResponseFactory
+     */
+    public function stockOutPuts(StoreProductStock $productStock): Response|Application|ResponseFactory
+    {
+        $productStock = $productStock->validated();
+        $product = $this->product->find($productStock['product_id']);
+
+        $sumStock = $product->stock - $productStock['stock'];
+
+        if ($sumStock < 0) {
+            return response([
+                'message' => "Valor total do estoque não pode ser negativo. Estoque atual: {$product->stock}"
+            ], 422);
+        }
+
+        $product->stock = $sumStock;
+        $product->save();
+
+        return response([
+            'data' => [
+                'stock' => $product->stock
+            ]
+        ]);
     }
 }
