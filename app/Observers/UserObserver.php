@@ -5,7 +5,6 @@ namespace App\Observers;
 use App\Mail\UserRegistered;
 use App\Models\User;
 use App\Tenant\TenantObserver;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
